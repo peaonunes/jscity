@@ -1,0 +1,24 @@
+{
+  "name": "extractor",
+  "version": "1.0.0",
+  "description": "Extracts information about a JavaScript project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "extractor",
+    "javascript",
+    "babel",
+    "parser"
+  ],
+  "author": "peaonunes",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
