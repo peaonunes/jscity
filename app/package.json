@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "eslint": "^6.6.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.4.3",
+    "prettier": "^1.19.1",
     "react-scripts": "3.2.0"
   },
   "dependencies": {
@@ -15,7 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"src/**/*.js\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,5 +36,28 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": true,
+    "jsxBracketSameLine": true
+  },
+  "husky": {
+    "hooks": {
+      "post-checkout": "if [[ $HUSKY_GIT_PARAMS =~ 1$ ]]; then yarn install --frozen-lockfile; fi",
+      "post-merge": "yarn install --frozen-lockfile",
+      "post-rebase": "yarn install",
+      "pre-commit": "lint-staged"
+    }
   }
 }
