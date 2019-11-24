@@ -1,0 +1,101 @@
+{
+  "File": {
+    "id": "File",
+    "name": "File",
+    "type": "File",
+    "parent": "Project",
+    "loc": 42,
+    "startLine": 1,
+    "endLine": 42,
+    "children": ["oneLineFunction#114", "sample#1623"],
+    "cec": 8
+  },
+  "oneLineFunction#114": {
+    "id": "oneLineFunction#114",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 1,
+    "endLine": 14,
+    "loc": 14,
+    "children": ["oneLineFunction#210"],
+    "parent": "File",
+    "cec": 5
+  },
+  "oneLineFunction#210": {
+    "id": "oneLineFunction#210",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 2,
+    "endLine": 10,
+    "loc": 9,
+    "children": [
+      "oneLineFunction#33",
+      "oneLineFunction#44",
+      "oneLineFunction#55"
+    ],
+    "parent": "oneLineFunction#114",
+    "cec": 3
+  },
+  "oneLineFunction#33": {
+    "id": "oneLineFunction#33",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 3,
+    "endLine": 3,
+    "loc": 1,
+    "children": [],
+    "parent": "oneLineFunction#210",
+    "cec": 0
+  },
+  "oneLineFunction#44": {
+    "id": "oneLineFunction#44",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 4,
+    "endLine": 4,
+    "loc": 1,
+    "children": [],
+    "parent": "oneLineFunction#210",
+    "cec": 0
+  },
+  "oneLineFunction#55": {
+    "id": "oneLineFunction#55",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 5,
+    "endLine": 5,
+    "loc": 1,
+    "children": [],
+    "parent": "oneLineFunction#210",
+    "cec": 0
+  },
+  "sample#1623": {
+    "id": "sample#1623",
+    "type": "FunctionDeclaration",
+    "name": "sample",
+    "startLine": 16,
+    "endLine": 23,
+    "loc": 8,
+    "children": ["oneLineFunction#1720"],
+    "parent": "File",
+    "cec": 2
+  },
+  "oneLineFunction#1720": {
+    "id": "oneLineFunction#1720",
+    "type": "FunctionDeclaration",
+    "name": "oneLineFunction",
+    "startLine": 17,
+    "endLine": 20,
+    "loc": 4,
+    "children": [],
+    "parent": "sample#1623",
+    "cec": 1
+  },
+  "Project": {
+    "id": "Project",
+    "type": "Project",
+    "children": ["File"],
+    "loc": 42,
+    "cec": 8
+  }
+}
