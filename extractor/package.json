@@ -16,7 +16,8 @@
   "author": "peaonunes",
   "license": "MIT",
   "dependencies": {
-    "@babel/parser": "^7.7.3"
+    "@babel/parser": "^7.7.3",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
