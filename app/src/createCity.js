@@ -1,16 +1,5 @@
 import get from 'lodash/get';
 
-function calcDimension(length) {
-  return Math.ceil(Math.sqrt(length));
-}
-
-function buildGrid(dimension) {
-  const grid = Array(dimension)
-    .fill()
-    .map(() => Array(dimension).fill(-1));
-  return grid;
-}
-
 function getSize(block) {
   const roadSize = 1;
   const childCount = block.children.length;
@@ -66,24 +55,8 @@ function buildCityBlocks(blocksMap) {
       childOffsetY = block.position[1] + block.size[1] / 2;
     }
 
-    // Build level grid
-    const dimension = calcDimension(block.children.length);
-    const grid = buildGrid(dimension);
-
-    // Add children to grid
-    let line = 0;
-    let column = 0;
-
     for (let i = 0; i < block.children.length; i++) {
       const childId = block.children[i];
-
-      // Add child to grid position
-      grid[line][column] = childId;
-      column++;
-      if (column === dimension) {
-        column = 0;
-        line++;
-      }
 
       // Add child to city blocksMap
       const child = blocksMap[childId];
@@ -106,9 +79,6 @@ function buildCityBlocks(blocksMap) {
       // Add child to the processing queue
       queue.unshift(child.id);
     }
-
-    // Define current block size
-    cityBlocks[block.id].grid = grid;
   }
 
   return cityBlocks;

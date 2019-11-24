@@ -1,4 +1,3 @@
-import times from 'lodash/times';
 import React from 'react';
 
 import Block from './Block';
