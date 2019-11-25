@@ -1,16 +1,19 @@
+body {
+  background-color: #fafafa;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
-  width: 100%;
-  height: 100%;
+}
+
+.navigation {
+  height: 48px;
 }
 
 .canva {
   background: #add8e6;
-  width: 100%;
-  height: 100%;
-}
-
-.canva > canvas {
-  height: 500px;
+  border-radius: 4px;
+  height: calc(100vh - 80px) !important;
+  cursor: pointer;
 }

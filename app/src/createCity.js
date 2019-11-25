@@ -1,5 +1,7 @@
 import get from 'lodash/get';
 
+import blocksPallet from './blocksPallet';
+
 function getSize(block) {
   const roadSize = 1;
   const childCount = block.children.length;
@@ -9,17 +11,6 @@ function getSize(block) {
   const z = block.loc + roadsOffset;
   return [x, y, z];
 }
-
-const blocksPallet = {
-  Project: '#757575',
-  File: '#bdbdbd',
-  FunctionDeclaration: '#e41a1c',
-  Enum: '#377eb8',
-  Extension: '#4daf4a',
-  Struct: '#984ea3',
-  Protocol: '#ff7f00',
-  DefaultColor: '#C18787'
-};
 
 function buildCityBlocks(blocksMap) {
   const roadSize = 1;
