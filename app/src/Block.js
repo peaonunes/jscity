@@ -1,17 +1,19 @@
+import React, { useMemo } from 'react';
+import { BoxBufferGeometry } from 'three';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 function Block({ block }) {
-  console.group(block.id);
-  console.log('position', block.position);
-  console.log('size', block.size);
-  console.groupEnd();
+  const geom = useMemo(() => new BoxBufferGeometry(...block.size), [block]);
   //https://threejs.org/docs/index.html#api/en/geometries/BoxGeometry
   // BoxGeometry(width: Float, height: Float, depth :Float)
   return (
     <mesh userData={block} position={block.position}>
       <meshBasicMaterial attach="material" color={block.color} />
-      <boxGeometry attach="geometry" args={block.size} />
+      <boxBufferGeometry attach="geometry" args={block.size} />
+      <lineSegments>
+        <edgesGeometry attach="geometry" args={[geom]} />
+        <lineBasicMaterial color="black" attach="material" linewidth="" />
+      </lineSegments>
     </mesh>
   );
 }
