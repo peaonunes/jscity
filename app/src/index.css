@@ -18,12 +18,6 @@ body {
   );
 }
 
-.navigation {
-  left: 18px;
-  color: #377eb8;
-  position: absolute;
-}
-
 .canva {
   cursor: pointer;
 }

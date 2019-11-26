@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 extend({ OrbitControls });
 
-function Controls() {
+function Controls({ autoRotate }) {
   const controls = useRef();
   const { camera, gl } = useThree();
 
@@ -12,7 +12,7 @@ function Controls() {
 
   return (
     <orbitControls
-      autoRotate
+      autoRotate={autoRotate}
       ref={controls}
       args={[camera, gl.domElement]}
       enableDamping

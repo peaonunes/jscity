@@ -1,0 +1,32 @@
+.navigation h1 {
+  position: absolute;
+  left: 12px;
+  color: #377eb8;
+}
+
+.settings {
+  position: absolute;
+  padding: 8px;
+  top: 16px;
+  right: 12px;
+  z-index: 1;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #fafafa;
+  border: solid;
+  border-width: 1px;
+  border-color: rgba(61, 62, 63, 0.16);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px 0 rgba(61, 62, 63, 0.16);
+
+  font-size: 14px;
+  min-width: 128px;
+}
+
+.settings input,
+label {
+  cursor: pointer;
+}
