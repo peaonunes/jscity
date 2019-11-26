@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 extend({ OrbitControls });
 
-function Controls({ canvas }) {
+function Controls() {
   const controls = useRef();
   const { camera, gl } = useThree();
 

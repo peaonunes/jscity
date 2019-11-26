@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import blocksPallet from './blocksPallet';
+import blocksPallet from '../blocksPallet';
 
 function getSize(block) {
   const roadSize = 1;

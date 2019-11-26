@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-import blocksPallet from './blocksPallet';
+import blocksPallet from '../blocksPallet';
 import './Card.css';
 
 function Card({ block }) {

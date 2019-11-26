@@ -1,17 +1,16 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Canvas } from 'react-three-fiber';
 import get from 'lodash/get';
 
-import buildCityBlocks from './createCity';
+import City, { buildCityBlocks } from './City';
 import Controls from './Controls';
-import City from './City';
 import Card from './Card';
-import data from './data';
+
+import data from './sample/data';
 
 function App() {
   const [selectedBlock, setSelectedBlock] = useState(null);
   const cityBlocks = useMemo(() => buildCityBlocks(data), []);
-  const ref = useRef(null);
 
   const handleSelect = block => {
     if (block.id === get(selectedBlock, 'id', '')) {
@@ -27,7 +26,7 @@ function App() {
         <h1>JSCity</h1>
       </nav>
       {selectedBlock && <Card block={selectedBlock} />}
-      <div ref={ref}>
+      <div>
         <Canvas
           className="canva"
           orthographic
@@ -37,15 +36,12 @@ function App() {
             up: [0, 1, 0],
             far: 1000
           }}>
-          {/*
-            <pointLight args={['0xffffff', 1, 1000]} position={[0, 25, -25]} />
-          */}
           <City
             cityBlocks={cityBlocks}
             onSelect={handleSelect}
             selectedBlock={selectedBlock}
           />
-          <Controls canvas={ref} />
+          <Controls />
         </Canvas>
       </div>
     </div>
