@@ -5,7 +5,7 @@
   bottom: 16px;
   right: 12px;
   z-index: 1;
-  background-color: white;
+  background-color: #fafafa;
 
   border: solid;
   border-width: 1px;
@@ -30,6 +30,7 @@
 }
 
 .toggle {
+  background: #fafafa;
   border: solid;
   border-width: 1px;
   border-color: rgba(61, 62, 63, 0.16);

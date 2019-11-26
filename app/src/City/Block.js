@@ -12,8 +12,13 @@ function Block({ block, selectedBlock, onSelect }) {
   const color = get(selectedBlock, 'id') === block.id ? 'white' : block.color;
 
   return (
-    <mesh userData={block} position={block.position} onClick={handleClick}>
-      <meshBasicMaterial attach="material" color={color} />
+    <mesh
+      userData={block}
+      position={block.position}
+      onClick={handleClick}
+      castShadow
+      receiveShadow>
+      <meshPhysicalMaterial attach="material" color={color} />
       <boxBufferGeometry attach="geometry" args={block.size} />
       <lineSegments>
         <edgesGeometry attach="geometry" args={[geom]} />

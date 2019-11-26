@@ -3,18 +3,28 @@ import React from 'react';
 
 import Block from './Block';
 
+const Plane = () => (
+  <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
+    <planeBufferGeometry attach="geometry" args={[100, 100]} />
+    <meshPhysicalMaterial attach="material" color="#4daf4a" />
+  </mesh>
+);
+
 function City({ cityBlocks, selectedBlock, onSelect }) {
   return (
-    <group>
-      {Object.keys(cityBlocks).map(blockId => (
-        <Block
-          key={blockId}
-          block={cityBlocks[blockId]}
-          selectedBlock={selectedBlock}
-          onSelect={onSelect}
-        />
-      ))}
-    </group>
+    <React.Fragment>
+      <group>
+        {Object.keys(cityBlocks).map(blockId => (
+          <Block
+            key={blockId}
+            block={cityBlocks[blockId]}
+            selectedBlock={selectedBlock}
+            onSelect={onSelect}
+          />
+        ))}
+      </group>
+      <Plane />
+    </React.Fragment>
   );
 }
 

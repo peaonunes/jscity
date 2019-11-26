@@ -12,12 +12,15 @@ function Controls() {
 
   return (
     <orbitControls
+      autoRotate
       ref={controls}
       args={[camera, gl.domElement]}
       enableDamping
       dampingFactor={0.1}
       maxZoom={40}
       minZoom={1}
+      maxPolarAngle={Math.PI / 2}
+      minPolarAngle={Math.PI / 3}
     />
   );
 }
