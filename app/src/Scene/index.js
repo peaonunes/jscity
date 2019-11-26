@@ -5,16 +5,21 @@ import * as THREE from 'three';
 import buildCityBlocks from './createCity';
 import Controls from './Controls';
 import City from './City';
+import extract from './../extractor';
 
-function Scene({ data, selectedBlock, onSelect, autoRotate }) {
-  const cityBlocks = useMemo(() => buildCityBlocks(data), [data]);
+function Scene({ sourceCode, selectedBlock, onSelect, autoRotate }) {
+  const cityBlocks = useMemo(() => {
+    if (!sourceCode) return {};
+    const hierarchy = extract(sourceCode);
+    return buildCityBlocks(hierarchy);
+  }, [sourceCode]);
 
   return (
     <Canvas
       className="canva"
       orthographic
       camera={{
-        position: [-25, 25, -55],
+        position: [25, 25, 55],
         zoom: 5,
         up: [0, 1, 0],
         far: 1000
@@ -24,7 +29,7 @@ function Scene({ data, selectedBlock, onSelect, autoRotate }) {
         gl.shadowMap.type = THREE.PCFSoftShadowMap;
       }}>
       <ambientLight intensity={0.75} />
-      <spotLight position={[0, 50, -100]} penumbra={1} castShadow />
+      <spotLight position={[0, 50, 100]} penumbra={1} castShadow />
       <City
         cityBlocks={cityBlocks}
         selectedBlock={selectedBlock}

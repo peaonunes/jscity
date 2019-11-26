@@ -10,6 +10,7 @@
     "react-scripts": "3.2.0"
   },
   "dependencies": {
+    "@babel/parser": "^7.7.4",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

@@ -5,7 +5,7 @@ const ROAD_SIZE_OFFSET = 1;
 
 function getSize(block) {
   const childCount = block.children.length;
-  const roadsOffset = childCount * ROAD_SIZE_OFFSET;
+  const roadsOffset = (childCount * ROAD_SIZE_OFFSET) / 2;
   const x = block.loc + roadsOffset;
   const y = block.type === 'FunctionDeclaration' ? block.cec || 1 : 1;
   const z = block.loc + roadsOffset;
@@ -44,25 +44,30 @@ function buildCityBlocks(blocksMap) {
     const block = cityBlocks[queue.pop()];
 
     // If the block has parent its children offset is based on his parent position
-    const parentX = get(cityBlocks[block.parent], 'position[0]', 0);
-    const parentZ = get(cityBlocks[block.parent], 'position[2]', 0);
-    childOffsetX = parentX;
-    childOffsetZ = parentZ;
+    const parentX = get(cityBlocks, `${block.parent}.position[0]`, 0);
+    const parentZ = get(cityBlocks, `${block.parent}.position[2]`, 0);
+    childOffsetX = block.position[0] + parentX;
+    childOffsetZ = block.position[2] + parentZ;
     const type = get(cityBlocks, `${block.id}.type`);
+
     if (type === 'FunctionDeclaration') {
       /*
        * block.position[1]: means the current block Y position.
        * size/2: because rendering on Y axis renders half on up direction and another half on down direction.
        */
+      childOffsetX = childOffsetX - block.size[0] / 2 + ROAD_SIZE_OFFSET;
       childOffsetY = block.position[1] + block.size[1] / 2;
-    } else if (type === 'Project') {
+      childOffsetZ = childOffsetZ - block.size[2] / 2 + ROAD_SIZE_OFFSET;
+    } else if (type === 'File') {
+      childOffsetX = childOffsetX - block.size[0] / 2 + ROAD_SIZE_OFFSET;
+      childOffsetY = block.position[1] + 0.5;
+      childOffsetZ = childOffsetZ - block.size[2] / 2 + ROAD_SIZE_OFFSET;
+    } else {
       /*
        * block.position[1]: means the current block Y position.
-       * 0.5: because Project have 1 of height.
+       * 0.5: because Project and File have 1 of height, half of it grows below Y.
        */
       childOffsetY = block.position[1] + 0.5;
-    } else {
-      childOffsetY = block.position[1];
     }
 
     for (let i = 0; i < block.children.length; i++) {
@@ -74,6 +79,10 @@ function buildCityBlocks(blocksMap) {
       // childOffsetY + half of the size of the block since it grows
       // both vertical directions
       const position = [childOffsetX, childOffsetY + size[1] / 2, childOffsetZ];
+      if (child.type === 'FunctionDeclaration') {
+        position[0] += size[0] / 2;
+        position[2] += size[2] / 2;
+      }
       // Add position as the current offset
       cityBlocks[child.id] = {
         ...child,
@@ -83,8 +92,8 @@ function buildCityBlocks(blocksMap) {
       };
 
       // Update offset based on its size
-      childOffsetX = child.loc + ROAD_SIZE_OFFSET;
-      childOffsetZ = child.loc + ROAD_SIZE_OFFSET;
+      childOffsetX = childOffsetX + size[0] + ROAD_SIZE_OFFSET;
+      childOffsetZ = childOffsetZ + size[2] + ROAD_SIZE_OFFSET;
 
       // Add child to the processing queue
       queue.unshift(child.id);
