@@ -12,7 +12,9 @@ function Card({ block }) {
   return (
     <div className="card">
       <div className="title">
-        <strong>{block.name}</strong>
+        <strong className="ellipsis" title={get(block, 'name', '')}>
+          {get(block, 'name', '')}
+        </strong>
         <button className="toggle" onClick={toggleOpen}>
           {open && '🙈'}
           {!open && '🐵'}
@@ -22,32 +24,36 @@ function Card({ block }) {
         <React.Fragment>
           <div className="divider" />
           <div className="details">
-            <div>
+            <div className="ellipsis" title={get(block, 'id', '')}>
               <strong>Id: </strong>
               {get(block, 'id', '')}
             </div>
-            <div>
+            <div className="ellipsis" title={get(block, 'type', '')}>
               <strong>Type: </strong>
               <span style={{ color: blocksPallet[get(block, 'type', '')] }}>
                 ●{' '}
               </span>
               {get(block, 'type', '')}
             </div>
-            <div>
+            <div className="ellipsis" title={get(block, 'loc', '')}>
               <strong>Lines of Code: </strong>
               {get(block, 'loc', '')}
             </div>
-            <div>
+            <div className="ellipsis" title={get(block, 'cec', '')}>
               <strong>Call Expressions: </strong>
               {get(block, 'cec', '')}
             </div>
-            <div>
+            <div className="ellipsis" title={get(block, 'startLine', '')}>
               <strong>Start line: </strong>
               {get(block, 'startLine', '')}
             </div>
-            <div>
+            <div className="ellipsis" title={get(block, 'endLine', '')}>
               <strong>End line: </strong>
               {get(block, 'endLine', '')}
+            </div>
+            <div className="ellipsis" title={get(block, 'parent', '')}>
+              <strong>Parent id: </strong>
+              {get(block, 'parent', '')}
             </div>
           </div>
         </React.Fragment>

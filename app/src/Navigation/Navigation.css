@@ -4,7 +4,7 @@
   color: #377eb8;
 }
 
-.settings {
+.menu {
   position: absolute;
   padding: 8px;
   top: 16px;
@@ -12,8 +12,8 @@
   z-index: 1;
 
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
 
   background-color: #fafafa;
   border: solid;
@@ -23,10 +23,41 @@
   box-shadow: 0 4px 6px 0 rgba(61, 62, 63, 0.16);
 
   font-size: 14px;
-  min-width: 128px;
+  width: 196px;
 }
 
-.settings input,
+.menu input,
 label {
   cursor: pointer;
+}
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+}
+
+.toggle {
+  background: #fafafa;
+  border: solid;
+  border-width: 1px;
+  border-color: rgba(61, 62, 63, 0.16);
+  border-radius: 4px;
+}
+
+.divider {
+  padding: 4px;
+  width: 100%;
+  border: 0 solid;
+  border-bottom-width: 1px;
+  border-color: rgba(61, 62, 63, 0.16);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 8px 4px 8px 4px;
 }

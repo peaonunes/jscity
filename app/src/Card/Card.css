@@ -29,6 +29,13 @@
   padding: 8px;
 }
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
 .toggle {
   background: #fafafa;
   border: solid;
