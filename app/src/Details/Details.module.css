@@ -1,4 +1,4 @@
-.card {
+.details {
   position: absolute;
   padding: 8px;
 
@@ -51,7 +51,7 @@
   padding: 8px;
 }
 
-.details {
+.content {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

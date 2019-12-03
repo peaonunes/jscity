@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 import blocksPallet from '../blocksPallet';
-import styles from './Card.module.css';
+import styles from './Details.module.css';
 
-function Card({ block }) {
+function Details({ block }) {
   const [open, setOpen] = useState(true);
   const toggleOpen = () => setOpen(!open);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.details}>
       <div className={styles.title}>
         <strong className={styles.ellipsis} title={get(block, 'name', '')}>
           {get(block, 'name', '')}
@@ -23,7 +23,7 @@ function Card({ block }) {
       {open && (
         <React.Fragment>
           <div className={styles.divider} />
-          <div className={styles.details}>
+          <div className={styles.content}>
             <div className={styles.ellipsis} title={get(block, 'id', '')}>
               <strong>Id: </strong>
               {get(block, 'id', '')}
@@ -64,7 +64,7 @@ function Card({ block }) {
   );
 }
 
-Card.propTypes = {
+Details.propTypes = {
   block: PropTypes.shape({
     type: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
@@ -77,4 +77,4 @@ Card.propTypes = {
   }).isRequired
 };
 
-export default Card;
+export default Details;
