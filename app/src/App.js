@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 import buildCityBlocks from './createCity';
@@ -11,14 +12,22 @@ import Scene from './Scene';
 function App() {
   const [autoRotate, setAutoRotate] = useState(true);
   const [selectedBlock, setSelectedBlock] = useState(null);
-  const [sourceCode, setCodeSource] = useState();
+  const [filesCount, setFilesCount] = useState(null);
+  const [sourceCode, setCodeSource] = useState([]);
 
   const handleUpload = files => {
-    const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      setCodeSource(fileReader.result);
-    };
-    fileReader.readAsText(files[0]);
+    if (files === null) return;
+    setFilesCount(files.length);
+    Array.from(files).forEach(file => {
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        setCodeSource(prevState => [
+          ...prevState,
+          { name: file.name, content: fileReader.result }
+        ]);
+      };
+      fileReader.readAsText(file);
+    });
   };
 
   const handleSelect = block => {
@@ -32,10 +41,12 @@ function App() {
   const toggleAutoRotate = () => setAutoRotate(!autoRotate);
 
   const cityBlocks = useMemo(() => {
-    if (!sourceCode) return {};
-    const hierarchy = extract(sourceCode);
-    return buildCityBlocks(hierarchy);
-  }, [sourceCode]);
+    if (!isEmpty(sourceCode) && sourceCode.length === filesCount) {
+      const hierarchy = extract(sourceCode);
+      return buildCityBlocks(hierarchy);
+    }
+    return {};
+  }, [sourceCode, filesCount]);
 
   return (
     <React.Fragment>

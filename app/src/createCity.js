@@ -22,10 +22,11 @@ function getSize(block) {
   return [x, y, z];
 }
 
-function getProjectSize(cityBlocks) {
-  return cityBlocks[types.PROJECT].children.reduce(
+function getProjectSize(city) {
+  console.log(city);
+  return city[types.PROJECT].children.reduce(
     (acc, childId) => {
-      const size = get(cityBlocks, `${childId}.size`);
+      const size = get(city, `${childId}.size`);
       const x = size[0] + acc[0];
       const y = 1;
       const z = size[2] + acc[2];
@@ -35,27 +36,28 @@ function getProjectSize(cityBlocks) {
   );
 }
 
-function buildCityBlocks(blocksMap) {
-  const cityBlocks = {};
+function buildDistrict(blocksMap) {
+  const city = {};
   const root = blocksMap[types.PROJECT];
-  const queue = [root.id];
   let childOffsetX = 0;
   let childOffsetY = 0;
   let childOffsetZ = 0;
 
-  cityBlocks[root.id] = {
+  city[root.id] = {
     ...root,
     color: blocksPallet[root.type],
     position: [childOffsetX, childOffsetY, childOffsetZ]
   };
 
+  const queue = [root.id];
+
   while (queue.length) {
     // Current block
-    const block = cityBlocks[queue.pop()];
+    const block = city[queue.pop()];
 
     // If the block has parent its children offset is based on his parent position
-    const parentX = get(cityBlocks, `${block.parent}.position[0]`, 0);
-    const parentZ = get(cityBlocks, `${block.parent}.position[2]`, 0);
+    const parentX = get(city, `${block.parent}.position[0]`, 0);
+    const parentZ = get(city, `${block.parent}.position[2]`, 0);
     childOffsetX = block.position[0] + parentX;
     childOffsetZ = block.position[2] + parentZ;
 
@@ -70,7 +72,7 @@ function buildCityBlocks(blocksMap) {
      * another half on the opposite direcation we have to calculate any offset
      * adding or removing the size of the geometry divided by 2.
      */
-    const type = get(cityBlocks, `${block.id}.type`);
+    const type = get(city, `${block.id}.type`);
     if (type === types.FUNCTION) {
       childOffsetX = childOffsetX - block.size[0] / 2 + ROAD_SIZE_OFFSET;
       childOffsetY = block.position[1] + block.size[1] / 2;
@@ -100,7 +102,7 @@ function buildCityBlocks(blocksMap) {
       }
 
       // Add position as the current offset
-      cityBlocks[child.id] = {
+      city[child.id] = {
         ...child,
         color: blocksPallet[child.type],
         position: [xCoodinate, yCoordinate, zCoordinate],
@@ -115,10 +117,13 @@ function buildCityBlocks(blocksMap) {
       queue.unshift(child.id);
     }
   }
-
-  cityBlocks[root.id].size = getProjectSize(cityBlocks);
-
-  return cityBlocks;
+  return city;
 }
 
-export default buildCityBlocks;
+function buildCity(blocksMap) {
+  const city = buildDistrict(blocksMap);
+  city[types.PROJECT].size = getProjectSize(city);
+  return city;
+}
+
+export default buildCity;

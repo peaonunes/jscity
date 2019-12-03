@@ -19,11 +19,13 @@ function Navigation({ autoRotate, setAutoRotate, handleUpload }) {
               upload file
             </label>
             <input
+              name="files"
               style={{ display: 'none' }}
               id="upload"
               type="file"
               accept=".js,.jsx"
               onChange={e => handleUpload(e.target.files)}
+              multiple
             />
           </div>
           <button className={styles.toggle} onClick={toggleOpen}>

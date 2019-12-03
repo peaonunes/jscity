@@ -19,17 +19,10 @@ function countLoc({ loc }) {
   return endLine - startLine + 1;
 }
 
-function getId(node) {
-  const name = getNodeId(node);
-  const startLine = getStartLine(node);
-  const endLine = getEndLine(node);
-  return `${name}#${startLine}${endLine}`;
-}
-
-function traverse(node, parent, blocks) {
+function traverse(node, parent, blocks, getId) {
   switch (node.type) {
     case 'FunctionDeclaration':
-      const id = getId(node);
+      const id = getId();
       blocks[id] = {
         id,
         type: node.type,
@@ -42,10 +35,10 @@ function traverse(node, parent, blocks) {
 
       // node.body type: "BlockStatement" therefore we should look for body of the block
       const callExpressionsCount = node.body.body.reduce((acc, child) => {
-        return acc + traverse(child, id, blocks);
+        return acc + traverse(child, id, blocks, getId);
       }, 0);
 
-      if (parent) {
+      if (parent != null) {
         blocks[parent].children.push(id);
         blocks[id].parent = parent;
       }
@@ -53,8 +46,8 @@ function traverse(node, parent, blocks) {
       blocks[id].cec = callExpressionsCount;
       return callExpressionsCount;
     case 'File':
-      const fileBlock = {
-        id: node.type,
+      const block = {
+        id: getId(),
         name: node.type,
         type: node.type,
         parent: 'Project',
@@ -63,15 +56,15 @@ function traverse(node, parent, blocks) {
         endLine: getEndLine(node),
         children: []
       };
-      blocks[node.type] = fileBlock;
-      blocks[node.type].cec = traverse(node.program, node.type, blocks);
-      return blocks[node.type].cec;
+      blocks[block.id] = block;
+      blocks[block.id].cec = traverse(node.program, block.id, blocks, getId);
+      return blocks[block.id].cec;
     case 'Program':
       return node.body.reduce((acc, child) => {
-        return acc + traverse(child, parent, blocks);
+        return acc + traverse(child, parent, blocks, getId);
       }, 0);
     case 'ExpressionStatement':
-      return traverse(node.expression, parent, blocks);
+      return traverse(node.expression, parent, blocks, getId);
     case 'CallExpression':
       return 1;
     default:
@@ -79,28 +72,31 @@ function traverse(node, parent, blocks) {
   }
 }
 
-function extract(sourceCode) {
+function extract(sourceFiles) {
+  let counter = 0;
+  function getId() {
+    return counter++;
+  }
+
   const blocks = {};
 
-  const ast = babelParser.parse(sourceCode, {
-    sourceType: 'module',
-    plugins: ['jsx']
-  });
-  traverse(ast, null, blocks);
-
-  const projectLoc = Object.keys(blocks)
-    .filter(key => blocks[key].type === 'File')
-    .reduce((sum, key) => sum + (blocks[key].loc || 0), 0);
-  const projectCec = Object.keys(blocks)
-    .filter(key => blocks[key].type === 'File')
-    .reduce((sum, key) => sum + (blocks[key].cec || 0), 0);
   const project = {
     id: 'Project',
-    type: 'Project',
-    children: ['File'],
-    loc: projectLoc,
-    cec: projectCec
+    type: 'Project'
   };
+
+  sourceFiles.forEach(sourceFile => {
+    const ast = babelParser.parse(sourceFile.content, {
+      sourceType: 'module',
+      plugins: ['jsx']
+    });
+    traverse(ast, null, blocks, getId);
+  });
+
+  const files = Object.keys(blocks).filter(key => blocks[key].type === 'File');
+  project.loc = files.reduce((sum, key) => sum + (blocks[key].loc || 0), 0);
+  project.cec = files.reduce((sum, key) => sum + (blocks[key].cec || 0), 0);
+  project.children = files.map(key => blocks[key].id);
   blocks[project.id] = project;
 
   return blocks;
