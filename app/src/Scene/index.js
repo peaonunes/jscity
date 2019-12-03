@@ -1,19 +1,11 @@
 import { Canvas } from 'react-three-fiber';
-import React, { useMemo } from 'react';
 import * as THREE from 'three';
+import React from 'react';
 
-import buildCityBlocks from './createCity';
 import Controls from './Controls';
 import City from './City';
-import extract from './../extractor';
 
-function Scene({ sourceCode, selectedBlock, onSelect, autoRotate }) {
-  const cityBlocks = useMemo(() => {
-    if (!sourceCode) return {};
-    const hierarchy = extract(sourceCode);
-    return buildCityBlocks(hierarchy);
-  }, [sourceCode]);
-
+function Scene({ cityBlocks, selectedBlock, onSelect, autoRotate }) {
   return (
     <Canvas
       className="canva"

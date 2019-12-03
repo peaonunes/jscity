@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import get from 'lodash/get';
 
-import Scene from './Scene';
-import Card from './Card';
+import buildCityBlocks from './createCity';
+import extract from './extractor';
 
-//import data from './sample/data';
 import Navigation from './Navigation';
+import Details from './Details';
+import Scene from './Scene';
 
 function App() {
   const [autoRotate, setAutoRotate] = useState(true);
   const [selectedBlock, setSelectedBlock] = useState(null);
   const [sourceCode, setCodeSource] = useState();
+
   const handleUpload = files => {
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
@@ -18,6 +20,7 @@ function App() {
     };
     fileReader.readAsText(files[0]);
   };
+
   const handleSelect = block => {
     if (block.id === get(selectedBlock, 'id', '')) {
       setSelectedBlock(null);
@@ -25,7 +28,14 @@ function App() {
       setSelectedBlock(block);
     }
   };
+
   const toggleAutoRotate = () => setAutoRotate(!autoRotate);
+
+  const cityBlocks = useMemo(() => {
+    if (!sourceCode) return {};
+    const hierarchy = extract(sourceCode);
+    return buildCityBlocks(hierarchy);
+  }, [sourceCode]);
 
   return (
     <React.Fragment>
@@ -34,9 +44,9 @@ function App() {
         setAutoRotate={toggleAutoRotate}
         handleUpload={handleUpload}
       />
-      {selectedBlock && <Card block={selectedBlock} />}
+      {selectedBlock && <Details block={selectedBlock} />}
       <Scene
-        sourceCode={sourceCode}
+        cityBlocks={cityBlocks}
         selectedBlock={selectedBlock}
         onSelect={handleSelect}
         autoRotate={autoRotate}
