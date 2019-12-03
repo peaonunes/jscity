@@ -14,6 +14,7 @@ function App() {
   const [sourceCode, setCodeSource] = useState();
 
   const handleUpload = files => {
+    if (files == null) return;
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
       setCodeSource(fileReader.result);
