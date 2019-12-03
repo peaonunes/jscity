@@ -1,23 +1,33 @@
+import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 import blocksPallet from './blocksPallet';
+
+const types = {
+  FUNCTION: 'FunctionDeclaration',
+  FILE: 'File',
+  PROJECT: 'Project'
+};
 const ROAD_SIZE_OFFSET = 1;
 
 function getSize(block) {
-  const childCount = block.children.length;
-  const roadsOffset = (childCount * ROAD_SIZE_OFFSET) / 2;
-  const x = block.loc + roadsOffset;
-  const y = block.type === 'FunctionDeclaration' ? block.cec || 1 : 1;
-  const z = block.loc + roadsOffset;
+  let roadsOffset = 0;
+  if (!isEmpty(block.children)) {
+    const childCount = block.children.length;
+    roadsOffset = childCount + (childCount - 1) * ROAD_SIZE_OFFSET;
+  }
+  const x = (block.cec || 1) + roadsOffset;
+  const y = block.type === types.FUNCTION ? block.loc || 1 : 1;
+  const z = (block.cec || 1) + roadsOffset;
   return [x, y, z];
 }
 
 function getProjectSize(cityBlocks) {
-  return cityBlocks['Project'].children.reduce(
+  return cityBlocks[types.PROJECT].children.reduce(
     (acc, childId) => {
       const size = get(cityBlocks, `${childId}.size`);
       const x = size[0] + acc[0];
-      const y = size[1];
+      const y = 1;
       const z = size[2] + acc[2];
       return [x, y, z];
     },
@@ -27,7 +37,7 @@ function getProjectSize(cityBlocks) {
 
 function buildCityBlocks(blocksMap) {
   const cityBlocks = {};
-  const root = blocksMap['Project'];
+  const root = blocksMap[types.PROJECT];
   const queue = [root.id];
   let childOffsetX = 0;
   let childOffsetY = 0;
@@ -48,25 +58,28 @@ function buildCityBlocks(blocksMap) {
     const parentZ = get(cityBlocks, `${block.parent}.position[2]`, 0);
     childOffsetX = block.position[0] + parentX;
     childOffsetZ = block.position[2] + parentZ;
-    const type = get(cityBlocks, `${block.id}.type`);
 
-    if (type === 'FunctionDeclaration') {
-      /*
-       * block.position[1]: means the current block Y position.
-       * size/2: because rendering on Y axis renders half on up direction and another half on down direction.
-       */
+    /*
+     * Defining the start offset based on current block size, position and offset for roads.
+     * The geometry grows on both directions on X, Y and Z. For example:
+     * Geometry on position = [0,0,0] and size = [1,1,1] will have it boundarias like:
+     *  on X = -0.5 to 0.5
+     *  on Y = -0.5 to 0.5
+     *  on Z = -0.5 to 0.5
+     * Since half of the geometry will go in one direction from the start point and
+     * another half on the opposite direcation we have to calculate any offset
+     * adding or removing the size of the geometry divided by 2.
+     */
+    const type = get(cityBlocks, `${block.id}.type`);
+    if (type === types.FUNCTION) {
       childOffsetX = childOffsetX - block.size[0] / 2 + ROAD_SIZE_OFFSET;
       childOffsetY = block.position[1] + block.size[1] / 2;
       childOffsetZ = childOffsetZ - block.size[2] / 2 + ROAD_SIZE_OFFSET;
-    } else if (type === 'File') {
+    } else if (type === types.FILE) {
       childOffsetX = childOffsetX - block.size[0] / 2 + ROAD_SIZE_OFFSET;
       childOffsetY = block.position[1] + 0.5;
       childOffsetZ = childOffsetZ - block.size[2] / 2 + ROAD_SIZE_OFFSET;
     } else {
-      /*
-       * block.position[1]: means the current block Y position.
-       * 0.5: because Project and File have 1 of height, half of it grows below Y.
-       */
       childOffsetY = block.position[1] + 0.5;
     }
 
@@ -76,22 +89,25 @@ function buildCityBlocks(blocksMap) {
       // Add child to city blocksMap
       const child = blocksMap[childId];
       const size = getSize(child);
-      // childOffsetY + half of the size of the block since it grows
-      // both vertical directions
-      const position = [childOffsetX, childOffsetY + size[1] / 2, childOffsetZ];
-      if (child.type === 'FunctionDeclaration') {
-        position[0] += size[0] / 2;
-        position[2] += size[2] / 2;
+
+      let xCoodinate = childOffsetX;
+      let yCoordinate = childOffsetY + size[1] / 2;
+      let zCoordinate = childOffsetZ;
+
+      if (child.type === types.FUNCTION) {
+        xCoodinate += size[0] / 2;
+        zCoordinate += size[2] / 2;
       }
+
       // Add position as the current offset
       cityBlocks[child.id] = {
         ...child,
         color: blocksPallet[child.type],
-        position,
+        position: [xCoodinate, yCoordinate, zCoordinate],
         size
       };
 
-      // Update offset based on its size
+      // Update offset for siblings based on the current child
       childOffsetX = childOffsetX + size[0] + ROAD_SIZE_OFFSET;
       childOffsetZ = childOffsetZ + size[2] + ROAD_SIZE_OFFSET;
 
