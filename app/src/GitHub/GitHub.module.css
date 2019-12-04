@@ -1,0 +1,11 @@
+.github {
+  position: absolute;
+  bottom: 16px;
+  left: 12px;
+  z-index: 1;
+}
+
+.github a {
+  color: #fafafa;
+  text-decoration: none;
+}

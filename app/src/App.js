@@ -6,6 +6,7 @@ import parse from './parser';
 
 import Navigation from './Navigation';
 import Details from './Details';
+import GitHub from './GitHub';
 import Scene from './Scene';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         onSelect={handleSelect}
         autoRotate={autoRotate}
       />
+      <GitHub />
     </React.Fragment>
   );
 }
