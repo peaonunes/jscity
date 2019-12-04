@@ -1,9 +1,11 @@
 {
-  "name": "app",
+  "name": "jscity",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://peaonunes.github.io/jscity",
   "devDependencies": {
     "eslint": "^6.6.0",
+    "gh-pages": "^2.1.1",
     "husky": "^3.1.0",
     "lint-staged": "^9.4.3",
     "prettier": "^1.19.1",
@@ -23,7 +25,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint \"src/**/*.js\""
+    "lint": "eslint \"src/**/*.js\"",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
