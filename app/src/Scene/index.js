@@ -1,11 +1,12 @@
 import { Canvas } from 'react-three-fiber';
+import PropTypes from 'prop-types';
 import * as THREE from 'three';
 import React from 'react';
 
 import Controls from './Controls';
 import City from './City';
 
-function Scene({ cityBlocks, selectedBlock, onSelect, autoRotate }) {
+function Scene({ city, selectedBlock, onSelect, autoRotate }) {
   return (
     <Canvas
       className="canva"
@@ -22,14 +23,17 @@ function Scene({ cityBlocks, selectedBlock, onSelect, autoRotate }) {
       }}>
       <ambientLight intensity={0.75} />
       <spotLight position={[0, 50, 100]} penumbra={1} castShadow />
-      <City
-        cityBlocks={cityBlocks}
-        selectedBlock={selectedBlock}
-        onSelect={onSelect}
-      />
+      <City city={city} selectedBlock={selectedBlock} onSelect={onSelect} />
       <Controls autoRotate={autoRotate} />
     </Canvas>
   );
 }
+
+Scene.propTypes = {
+  autoRotate: PropTypes.bool.isRequired,
+  city: PropTypes.object.isRequired,
+  selectedBlock: PropTypes.object,
+  onSelect: PropTypes.func
+};
 
 export default Scene;

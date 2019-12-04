@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import get from 'lodash/get';
 
-import buildCityBlocks from './createCity';
-import extract from './extractor';
+import buildCity from './cityFactory';
+import parse from './parser';
 
 import Navigation from './Navigation';
 import Details from './Details';
@@ -32,10 +32,10 @@ function App() {
 
   const toggleAutoRotate = () => setAutoRotate(!autoRotate);
 
-  const cityBlocks = useMemo(() => {
+  const city = useMemo(() => {
     if (!sourceCode) return {};
-    const hierarchy = extract(sourceCode);
-    return buildCityBlocks(hierarchy);
+    const nodes = parse(sourceCode);
+    return buildCity(nodes);
   }, [sourceCode]);
 
   return (
@@ -47,7 +47,7 @@ function App() {
       />
       {selectedBlock && <Details block={selectedBlock} />}
       <Scene
-        cityBlocks={cityBlocks}
+        city={city}
         selectedBlock={selectedBlock}
         onSelect={handleSelect}
         autoRotate={autoRotate}

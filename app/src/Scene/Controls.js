@@ -20,7 +20,6 @@ function Controls({ autoRotate }) {
       maxZoom={40}
       minZoom={1}
       maxPolarAngle={Math.PI / 2}
-      minPolarAngle={Math.PI / 3}
     />
   );
 }

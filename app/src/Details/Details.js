@@ -67,13 +67,15 @@ function Details({ block }) {
 Details.propTypes = {
   block: PropTypes.shape({
     type: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     loc: PropTypes.number.isRequired,
-    children: PropTypes.arrayOf(PropTypes.string).isRequired,
+    children: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.node, PropTypes.string])
+    ).isRequired,
     cec: PropTypes.number.isRequired,
     startLine: PropTypes.number,
     endLine: PropTypes.number,
-    parent: PropTypes.string
+    parent: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
   }).isRequired
 };
 

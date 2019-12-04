@@ -31,14 +31,19 @@ function Block({ block, selectedBlock, onSelect }) {
 Block.propTypes = {
   block: PropTypes.shape({
     type: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     loc: PropTypes.number.isRequired,
-    children: PropTypes.arrayOf(PropTypes.string).isRequired,
+    children: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.node, PropTypes.string])
+    ).isRequired,
     cec: PropTypes.number.isRequired,
-    parent: PropTypes.string
+    parent: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    position: PropTypes.arrayOf(PropTypes.number).isRequired,
+    size: PropTypes.arrayOf(PropTypes.number).isRequired,
+    color: PropTypes.string.isRequired
   }).isRequired,
   selectedBlock: PropTypes.shape({
-    id: PropTypes.string
+    id: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
   }),
   onSelect: PropTypes.func.isRequired
 };

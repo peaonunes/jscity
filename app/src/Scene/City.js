@@ -10,14 +10,14 @@ const Plane = () => (
   </mesh>
 );
 
-function City({ cityBlocks, selectedBlock, onSelect }) {
+function City({ city, selectedBlock, onSelect }) {
   return (
     <React.Fragment>
       <group>
-        {Object.keys(cityBlocks).map(blockId => (
+        {Object.keys(city).map(blockId => (
           <Block
             key={blockId}
-            block={cityBlocks[blockId]}
+            block={city[blockId]}
             selectedBlock={selectedBlock}
             onSelect={onSelect}
           />
@@ -29,7 +29,9 @@ function City({ cityBlocks, selectedBlock, onSelect }) {
 }
 
 City.propTypes = {
-  cityBlocks: PropTypes.object.isRequired
+  city: PropTypes.object.isRequired,
+  selectedBlock: PropTypes.object,
+  onSelect: PropTypes.func
 };
 
 export default City;
