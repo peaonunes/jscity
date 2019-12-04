@@ -1,6 +1,7 @@
 # JSCity
 JavaScript projects visualised as Cities.
 
+![JSCity](icon.png)
 
 This project is under development and very limited feel free to add any issues, comments and improvements.
 
