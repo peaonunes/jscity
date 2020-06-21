@@ -47,6 +47,26 @@ function Navigation({ autoRotate, setAutoRotate, handleUpload }) {
                 <label htmlFor="autoRotate">auto rotate</label>
               </div>
             </div>
+            <div className={styles.options}>
+              <a
+                href="https://peaonunes.github.io/jscity/example.js"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span role="img" aria-label="download example 1">
+                  ⬇
+                </span>{' '}
+                Example file 1
+              </a>
+              <a
+                href="https://peaonunes.github.io/jscity/example2.js"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span role="img" aria-label="download example 2">
+                  ⬇
+                </span>{' '}
+                Example file 2
+              </a>
+            </div>
           </React.Fragment>
         )}
       </div>
