@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 import blocksPallet from './blocksPallet';
@@ -6,12 +5,10 @@ import nodeTypes from './nodeTypes';
 
 const ROAD_SIZE_OFFSET = 1;
 
-function getSize(block) {
-  let roadsOffset = 0;
-  if (!isEmpty(block.children)) {
-    const childCount = block.children.length;
-    roadsOffset = childCount + (childCount - 1) * ROAD_SIZE_OFFSET;
-  }
+function getSize(block, nodes) {
+  const roadsOffset = block.children.reduce((offset, childId) => {
+    return offset + (nodes[childId].cec || 1) + 1;
+  }, 0);
   const x = (block.cec || 1) + roadsOffset;
   const y = block.type === nodeTypes.FUNCTION ? block.loc || 1 : 1;
   const z = (block.cec || 1) + roadsOffset;
@@ -84,7 +81,7 @@ function buildCity(nodes) {
 
       // Add child to city nodes
       const child = nodes[childId];
-      const size = getSize(child);
+      const size = getSize(child, nodes);
 
       let xCoodinate = childOffsetX;
       let yCoordinate = childOffsetY + size[1] / 2;
