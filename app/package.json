@@ -5,7 +5,7 @@
   "homepage": "http://peaonunes.github.io/jscity",
   "devDependencies": {
     "eslint": "^6.6.0",
-    "gh-pages": "^2.1.1",
+    "gh-pages": "^5.0.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.4.3",
     "prettier": "^1.19.1",
